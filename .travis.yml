@@ -1,0 +1,35 @@
+os: linux
+language: generic
+services:
+    - docker
+
+before_install:
+    - docker build -t costigator/react-test -f ./client/Dockerfile.dev ./client
+
+script:
+    - docker run -e CI=true costigator/react-test npm test
+
+after_success:
+    - docker build -t costigator/multi-client ./client
+    - docker build -t costigator/multi-nginx ./nginx
+    - docker build -t costigator/multi-server ./server
+    - docker build -t costigator/multi-worker ./worker
+    # Log in to the docker CLI
+    - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+    # Take those images and push them to docker hub
+    - docker push costigator/multi-client
+    - docker push costigator/multi-nginx
+    - docker push costigator/multi-server
+    - docker push costigator/multi-worker
+
+# deploy:
+#     provider: elasticbeanstalk
+#     region: "us-west-2"
+#     app: "docker-react"
+#     env: "DockerReact-env"
+#     bucket_name: "elasticbeanstalk-us-west-2-949260735006"
+#     bucket_path: "docker-react"
+#     on:
+#         branch: master
+#     access_key_id: $AWS_ACCESS_KEY
+#     secret_access_key: $AWS_SECRET_KEY

@@ -8,3 +8,6 @@ docker run CONTAINER_ID
 
 # build the project
 docker-compose up --build
+
+# travis CI
+https://travis-ci.org/
