@@ -22,14 +22,14 @@ after_success:
     - docker push costigator/multi-server
     - docker push costigator/multi-worker
 
-# deploy:
-#     provider: elasticbeanstalk
-#     region: "us-west-2"
-#     app: "docker-react"
-#     env: "DockerReact-env"
-#     bucket_name: "elasticbeanstalk-us-west-2-949260735006"
-#     bucket_path: "docker-react"
-#     on:
-#         branch: master
-#     access_key_id: $AWS_ACCESS_KEY
-#     secret_access_key: $AWS_SECRET_KEY
+deploy:
+    provider: elasticbeanstalk
+    region: "us-west-2"
+    app: "multi-docker"
+    env: "MultiDocker-env"
+    bucket_name: "elasticbeanstalk-us-west-2-949260735006"
+    bucket_path: "docker-multi"
+    on:
+        branch: master
+    access_key_id: $AWS_ACCESS_KEY
+    secret_access_key: $AWS_SECRET_KEY
